@@ -152,6 +152,85 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-hi-2021" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/31/hi-2021/">hi 2021</a>
+    </h1>
+  
+
+        
+        <a href="/2020/12/31/hi-2021/" class="archive-article-date">
+  	<time datetime="2020-12-31T15:30:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>不想看细节的小伙伴，直接看最后面的总结。<br>刚进公司，要熟悉一个前端用vue写的项目，由于之前从来没有接触过vue，所以就上网查，按照网上的教程，在命令行新建项目，安装依赖包，运行项目都成功了。但是当使用VSCode运行vue项目，执行cnpm install命令下载依赖包时，持续报错。<br>vue环境的安装，新建项目的流程，就参见<a href="https://blog.csdn.net/qq_33863843/article/details/75249473这篇博客啦，很详细。" target="_blank" rel="noopener">https://blog.csdn.net/qq_33863843/article/details/75249473这篇博客啦，很详细。</a><br>但是当在VSCode中引入项目，执行cnpm install的时候，提示：cnpm : 无法加载文件 D:\Program Files\nodejs\node_global\cnpm.ps1。未对文件 D:\Program Files\nodejs\node_global\cnpm.ps1 进行数字签名。无法在当前系统上运行该脚本。有关运行脚本<br>所在位置 行:1 字符: 1</p>
+<ul>
+<li><p>cnpm install</p>
+</li>
+<li><pre><code>+ CategoryInfo          : SecurityError: (:) []，PSSecurityException
++ FullyQualifiedErrorId : UnauthorizedAccess。
+如下图所示：</code></pre></li>
+</ul>
+<p><a href="https://img.it610.com/image/info8/42184be34dc2481f9552a21eace1db2c.jpg" target="_blank" rel="noopener"><img src="hi-2021.assets/42184be34dc2481f9552a21eace1db2c.jpg" alt="在这里插入图片描述"></a><br>然后去网上查，说是权限的问题，执行命令set-ExecutionPolicy RemoteSigned可以解决问题。<br>然后我就按照操作做了，又报错了。这次的错误是：<br>set-ExecutionPolicy : Windows PowerShell 已成功更新你的执行策略，但在更具体的作业域中定义的策略覆盖了该设置。由于发生覆盖，你的外壳程序将保留其当前的有效执行策略 AllSigned。请<br>键入“Get-ExecutionPolicy -List”以查看你的执行策略设置。有关详细信息，请参阅“Get-Help Set-ExecutionPolicy”。<br>所在位置 行:1 字符: 1</p>
+<ul>
+<li>set-ExecutionPolicy RemoteSigned<ul>
+<li>CategoryInfo : PermissionDenied: ( [Set-ExecutionPolicy], SecurityException</li>
+<li>FullyQualifiedErrorId : ExecutionPolicyOverride,Microsoft.PowerShell.Commands.SetExecutionPolicyCommand<br>如下图所示：<br><a href="https://img.it610.com/image/info8/e438071606d04a7884aa6991fa648f4d.jpg" target="_blank" rel="noopener"><img src="hi-2021.assets/e438071606d04a7884aa6991fa648f4d.jpg" alt="在这里插入图片描述"></a><br>错误说是具体策略覆盖了刚更新的策略，程序仍然保持原有的执行策略。反正最终结果就是未生效呗，后面又提示执行Get-ExecutionPolicy -List”以查看你的执行策略设置。<br>我去网上查了一下Get-ExecutionPolicy -List这个命令是按照优先级来查看执行策略的，优先级由高到低。<br>例如我的执行完后，是这样的<a href="https://img.it610.com/image/info8/769007e2abc64aec8da6f08a26fcb079.png" target="_blank" rel="noopener"><img src="hi-2021.assets/769007e2abc64aec8da6f08a26fcb079.png" alt="VSCode启动vue项目遇到的坑_第1张图片"></a><br>代表当前程序是以CurrentUser的AllSigned策略执行的。<br>（关于执行策略及其作用域的解释，想要了解的小伙伴参见<a href="https://blog.csdn.net/Jeffxu_lib/article/details/84710386这篇博客。）" target="_blank" rel="noopener">https://blog.csdn.net/Jeffxu_lib/article/details/84710386这篇博客。）</a><br>所以我们要做的就是将Process作用域的执行策略也修改为RemoteSigned就可以了。<br>执行命令：Set-ExecutionPolicy RemoteSigned -Scope Process<br>问题解决。<br>再次执行cnpm install下载依赖包，发现成功了。<br>执行npm run dev，项目跑起来了，开心。</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a><strong>总结：</strong></h2><p>1.参见<a href="https://blog.csdn.net/qq_33863843/article/details/75249473这篇博客，在命令行新建项目并运行成功。" target="_blank" rel="noopener">https://blog.csdn.net/qq_33863843/article/details/75249473这篇博客，在命令行新建项目并运行成功。</a><br>2.在VSCode执行cnpm install，报错。<br><a href="https://img.it610.com/image/info8/42184be34dc2481f9552a21eace1db2c.jpg" target="_blank" rel="noopener"><img src="hi-2021.assets/42184be34dc2481f9552a21eace1db2c.jpg" alt="在这里插入图片描述"></a><br>3.执行命令set-ExecutionPolicy RemoteSigned<br>继续报错<a href="https://img.it610.com/image/info8/e438071606d04a7884aa6991fa648f4d.jpg" target="_blank" rel="noopener"><img src="hi-2021.assets/e438071606d04a7884aa6991fa648f4d.jpg" alt="在这里插入图片描述"></a><br>4.执行命令：Set-ExecutionPolicy RemoteSigned -Scope Process<br>问题解决。<br>5.执行cnpm install安装依赖包，执行npm run dev运行项目。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/12/31/hi-2021/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
